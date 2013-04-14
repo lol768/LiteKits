@@ -1,5 +1,6 @@
 package com.lol768.LiteKits.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,8 +10,11 @@ import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import com.lol768.LiteKits.LiteKits;
+import com.lol768.LiteKits.API.KitCheckEvent;
+import com.lol768.LiteKits.API.KitReceivedEvent;
 import com.lol768.LiteKits.conversation.CreationConversationPrefix;
 import com.lol768.LiteKits.conversation.KitNamePrompt;
 import com.lol768.LiteKits.conversation.KitRemovalPrompt;
@@ -89,6 +93,7 @@ public class Kit extends CommandUtility implements CommandExecutor {
                 sender.sendMessage("That kit already exists.");
                 return true;
             }*/
+            
             Player p = (Player) sender;
             p.sendMessage(super.getPlugin().prefix + ChatColor.AQUA + "Welcome to the LiteKits kit creation wizard!");
             p.sendMessage(super.getPlugin().prefix + ChatColor.AQUA + "Answer the questions in chat or use /quit to abort");
@@ -118,12 +123,22 @@ public class Kit extends CommandUtility implements CommandExecutor {
                 return true;
             }
             Player p = (Player) sender;
-            
+            KitCheckEvent kce = new KitCheckEvent(p, args[1]);
+            Bukkit.getServer().getPluginManager().callEvent(kce);
+            if (kce.isCancelled()) {
+                return true;
+            }
             ConfigurationSection main = super.getPlugin().getConfig().getConfigurationSection("kits." + args[1] + ".main");
             for (String key: main.getKeys(false)) {
                 super.getPlugin().getLogger().info("kits." + args[1] + ".main." + key);
                 p.getInventory().setItem(Integer.parseInt(key), super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".main." + key));
             }
+            
+            //TODO: Armour
+            FixedMetadataValue lastKit = new FixedMetadataValue(super.getPlugin(), args[1]);
+            p.setMetadata("lastKit", lastKit);
+            KitReceivedEvent kre = new KitReceivedEvent(p, args[1]);
+            Bukkit.getServer().getPluginManager().callEvent(kre);
             
             
         }
