@@ -1,0 +1,8 @@
+name: LiteKits
+main: com.lol768.LiteKits.LiteKits
+version: ${project.version}
+author: lol768
+commands:
+  kit:
+    description: Main kit command
+    usage: /kit <create|list|select|remove> [name] 
