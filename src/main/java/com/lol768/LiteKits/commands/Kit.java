@@ -51,8 +51,11 @@ public class Kit extends CommandUtility implements CommandExecutor {
                 
             }
             String list = sb.toString();
-            
-            sender.sendMessage(list.substring(0, list.length() - 2));
+            if (list == "") {
+                sender.sendMessage("There are currently no available kits.");
+            } else {
+                sender.sendMessage(list.substring(0, list.length() - 2));
+            }
             return true;
             
         }
@@ -99,15 +102,7 @@ public class Kit extends CommandUtility implements CommandExecutor {
                 return true;
             }
             
-            /*if (args.length != 2) {
-                sender.sendMessage("You must supply a name for the kit.");
-                return false;
-            } 
             
-            if (super.getPlugin().getConfig().contains("kits." + args[1])) {
-                sender.sendMessage("That kit already exists.");
-                return true;
-            }*/
             
             Player p = (Player) sender;
             p.sendMessage(super.getPlugin().prefix + ChatColor.AQUA + "Welcome to the LiteKits kit creation wizard!");
