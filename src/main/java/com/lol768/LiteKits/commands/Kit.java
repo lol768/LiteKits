@@ -69,9 +69,11 @@ public class Kit extends CommandUtility implements CommandExecutor {
             if (args.length == 2) {
                 if (!super.getPlugin().getConfig().contains("kits." + args[1])) {
                     sender.sendMessage(super.getPlugin().prefix + ChatColor.RED + "Kit doesn't exist.");
+                    return true;
                 } else {
                     super.getPlugin().getConfig().set("kits." + args[1], null);
                     sender.sendMessage(super.getPlugin().prefix + ChatColor.GREEN + "Kit has been removed.");
+                    return true;
                 }
             } else {
                 if (!(sender instanceof Player)) {
@@ -87,6 +89,7 @@ public class Kit extends CommandUtility implements CommandExecutor {
                     factory.withPrefix(new CreationConversationPrefix(super.getPlugin()));
                     factory.withFirstPrompt(new KitRemovalPrompt(super.getPlugin()));
                     factory.buildConversation(p).begin();
+                    return true;
                 }
             }
         }
