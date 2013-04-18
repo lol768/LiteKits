@@ -157,10 +157,10 @@ public class Kit extends CommandUtility implements CommandExecutor {
                 p.getInventory().setItem(Integer.parseInt(key), super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".main." + key));
             }
             
-            p.getInventory().setBoots(super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".armour.4"));
-            p.getInventory().setLeggings(super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".armour.3"));
-            p.getInventory().setChestplate(super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".armour.2"));
-            p.getInventory().setHelmet(super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".armour.1"));
+            p.getInventory().setBoots(super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".armour.boots"));
+            p.getInventory().setLeggings(super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".armour.leggings"));
+            p.getInventory().setChestplate(super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".armour.chestplate"));
+            p.getInventory().setHelmet(super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".armour.helmet"));
             
             FixedMetadataValue lastKit = new FixedMetadataValue(super.getPlugin(), args[1]);
             p.setMetadata("lastKit", lastKit);
