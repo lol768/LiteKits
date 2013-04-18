@@ -142,7 +142,7 @@ public class Kit extends CommandUtility implements CommandExecutor {
                 return true;
             }
             
-            if (!sender.hasPermission("LiteKits.select." + args[1])) {
+            if (!sender.hasPermission("LiteKits.use." + args[1])) {
                 Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
                 return true;
             }
@@ -155,11 +155,14 @@ public class Kit extends CommandUtility implements CommandExecutor {
             }
             ConfigurationSection main = super.getPlugin().getConfig().getConfigurationSection("kits." + args[1] + ".main");
             for (String key: main.getKeys(false)) {
-                super.getPlugin().getLogger().info("kits." + args[1] + ".main." + key);
                 p.getInventory().setItem(Integer.parseInt(key), super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".main." + key));
             }
             
-            //TODO: Armour
+            p.getInventory().setBoots(super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".armour.4"));
+            p.getInventory().setLeggings(super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".armour.3"));
+            p.getInventory().setChestplate(super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".armour.2"));
+            p.getInventory().setHelmet(super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".armour.1"));
+            
             FixedMetadataValue lastKit = new FixedMetadataValue(super.getPlugin(), args[1]);
             p.setMetadata("lastKit", lastKit);
             KitReceivedEvent kre = new KitReceivedEvent(p, args[1]);
