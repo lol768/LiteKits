@@ -23,6 +23,7 @@ public class KitRemovalPrompt extends ValidatingPrompt {
     @Override
     protected Prompt acceptValidatedInput(ConversationContext arg0, String arg1) {
         lk.getConfig().set("kits." + arg1, null);
+        lk.saveConfig();
         arg0.getForWhom().sendRawMessage(lk.prefix + ChatColor.GREEN + "Kit has been removed.");
         return Prompt.END_OF_CONVERSATION;
     }
