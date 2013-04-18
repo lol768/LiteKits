@@ -17,7 +17,7 @@ public class KitNamePrompt extends ValidatingPrompt {
     @Override
     public String getPromptText(ConversationContext arg0) {
         
-        return "Which kit would you like to remove?";
+        return "What would you like your kit's name to be?";
     }
 
     @Override
