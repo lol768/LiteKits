@@ -19,6 +19,7 @@ import com.lol768.LiteKits.conversation.CreationConversationPrefix;
 import com.lol768.LiteKits.conversation.KitNamePrompt;
 import com.lol768.LiteKits.conversation.KitRemovalPrompt;
 import com.lol768.LiteKits.utility.CommandUtility;
+import com.lol768.LiteKits.utility.Messaging;
 
 public class Kit extends CommandUtility implements CommandExecutor {
 
@@ -35,6 +36,10 @@ public class Kit extends CommandUtility implements CommandExecutor {
         }
         
         if (args[0].equalsIgnoreCase("list")) {
+            if (!sender.hasPermission("LiteKits.list")) {
+                Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
+                return true;
+            }
             ConfigurationSection main = super.getPlugin().getConfig().getConfigurationSection("kits");
             StringBuilder sb = new StringBuilder();
             for (String kit: main.getKeys(false)) {
@@ -53,6 +58,11 @@ public class Kit extends CommandUtility implements CommandExecutor {
         }
         
         if (args[0].equalsIgnoreCase("remove")) {
+            if (!sender.hasPermission("LiteKits.remove")) {
+                Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
+                return true;
+            }
+            
             if (args.length == 2) {
                 if (!super.getPlugin().getConfig().contains("kits." + args[1])) {
                     sender.sendMessage(super.getPlugin().prefix + ChatColor.RED + "Kit doesn't exist.");
@@ -79,6 +89,11 @@ public class Kit extends CommandUtility implements CommandExecutor {
         }
         
         if (args[0].equalsIgnoreCase("create")) {
+            if (!sender.hasPermission("LiteKits.create")) {
+                Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
+                return true;
+            }
+            
             if (!(sender instanceof Player)) {
                 sender.sendMessage("You must be a player to do this.");
                 return true;
@@ -108,6 +123,10 @@ public class Kit extends CommandUtility implements CommandExecutor {
         }
         
         if (args[0].equalsIgnoreCase("select")) {
+            if (!sender.hasPermission("LiteKits.kit")) {
+                Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
+                return true;
+            }
             if (!(sender instanceof Player)) {
                 sender.sendMessage("You must be a player to do this.");
                 return true;
@@ -122,6 +141,12 @@ public class Kit extends CommandUtility implements CommandExecutor {
                 sender.sendMessage("That kit doesn't exist.");
                 return true;
             }
+            
+            if (!sender.hasPermission("LiteKits.select." + args[1])) {
+                Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
+                return true;
+            }
+            
             Player p = (Player) sender;
             KitCheckEvent kce = new KitCheckEvent(p, args[1]);
             Bukkit.getServer().getPluginManager().callEvent(kce);
