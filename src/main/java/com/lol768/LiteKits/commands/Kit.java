@@ -72,6 +72,7 @@ public class Kit extends CommandUtility implements CommandExecutor {
                     return true;
                 } else {
                     super.getPlugin().getConfig().set("kits." + args[1], null);
+                    super.getPlugin().saveConfig();
                     sender.sendMessage(super.getPlugin().prefix + ChatColor.GREEN + "Kit has been removed.");
                     return true;
                 }
