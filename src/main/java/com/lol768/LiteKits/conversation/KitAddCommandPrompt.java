@@ -34,18 +34,10 @@ public class KitAddCommandPrompt extends BooleanPrompt {
         PlayerInventory i = ((Player) arg0.getForWhom()).getInventory();
         
         ItemStack[] main = i.getContents();
-        int counter = 0;
-        lk.getConfig().set("kits." + arg0.getSessionData("kitName") + ".armour.helmet", i.getHelmet());
-        lk.getConfig().set("kits." + arg0.getSessionData("kitName") + ".armour.chestplate", i.getChestplate());
-        lk.getConfig().set("kits." + arg0.getSessionData("kitName") + ".armour.leggings", i.getLeggings());
-        lk.getConfig().set("kits." + arg0.getSessionData("kitName") + ".armour.boots", i.getBoots());
+        lk.getConfig().set("kits." + arg0.getSessionData("kitName") + ".armour", i.getArmorContents());
+        lk.getConfig().set("kits." + arg0.getSessionData("kitName") + ".main", main);
         
-        for (ItemStack is: main) {
-            if (is != null) {
-                lk.getConfig().set("kits." + arg0.getSessionData("kitName") + ".main." + counter, is);
-            }
-            counter++;
-        }
+        
         lk.saveConfig();
         
         return new KitMadePrompt(lk);

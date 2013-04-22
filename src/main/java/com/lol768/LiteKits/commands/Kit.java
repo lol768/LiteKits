@@ -152,15 +152,9 @@ public class Kit extends CommandUtility implements CommandExecutor {
             if (kce.isCancelled()) {
                 return true;
             }
-            ConfigurationSection main = super.getPlugin().getConfig().getConfigurationSection("kits." + args[1] + ".main");
-            for (String key: main.getKeys(false)) {
-                p.getInventory().setItem(Integer.parseInt(key), super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".main." + key));
-            }
-            
-            p.getInventory().setBoots(super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".armour.boots"));
-            p.getInventory().setLeggings(super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".armour.leggings"));
-            p.getInventory().setChestplate(super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".armour.chestplate"));
-            p.getInventory().setHelmet(super.getPlugin().getConfig().getItemStack("kits." + args[1] + ".armour.helmet"));
+           
+            p.getInventory().setArmorContents((ItemStack[]) super.getPlugin().getConfig().get("kits." + args[1] + ".armour"));
+            p.getInventory().setContents((ItemStack[]) super.getPlugin().getConfig().get("kits." + args[1] + ".main"));
             
             FixedMetadataValue lastKit = new FixedMetadataValue(super.getPlugin(), args[1]);
             p.setMetadata("lastKit", lastKit);
