@@ -1,5 +1,7 @@
 package com.lol768.LiteKits.commands;
 
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -9,7 +11,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import com.lol768.LiteKits.LiteKits;
@@ -29,6 +30,7 @@ public class Kit extends CommandUtility implements CommandExecutor {
         super.registerCommand("kit");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
         if (args.length == 0) {
@@ -153,13 +155,47 @@ public class Kit extends CommandUtility implements CommandExecutor {
                 return true;
             }
            
-            p.getInventory().setArmorContents((ItemStack[]) super.getPlugin().getConfig().get("kits." + args[1] + ".armour"));
-            p.getInventory().setContents((ItemStack[]) super.getPlugin().getConfig().get("kits." + args[1] + ".main"));
+            Object armour = super.getPlugin().getConfig().get("kits." + args[1] + ".armour");
+            Object main = super.getPlugin().getConfig().get("kits." + args[1] + ".main");
+            Boolean aDone = false;
+            Boolean mDone = false;
+            if (armour instanceof ItemStack[]) {
+                p.getInventory().setArmorContents((ItemStack[]) armour);
+                aDone = true;
+            }
+            
+            if (main instanceof ItemStack[]) {
+                p.getInventory().setContents((ItemStack[]) main);
+                mDone = true;
+            }
+            try {
+                if (armour instanceof List) {
+                    p.getInventory().setArmorContents((ItemStack[]) ((List) armour).toArray(new ItemStack[0]));
+                    aDone = true;
+                }
+                
+                if (main instanceof List) {
+                    p.getInventory().setContents((ItemStack[]) ((List) main).toArray(new ItemStack[0]));
+                    mDone = true;
+                }
+            } catch (Exception e) {
+                super.getPlugin().getLogger().severe("Looks like you've broken the config buddy.");
+                super.getPlugin().getLogger().severe("Don't expect any support from the authors - you've edited the config.");
+                p.sendMessage("An error ocurred.");
+                
+            }
+            
+            if (!mDone || !aDone) {
+                super.getPlugin().getLogger().severe("Looks like you've broken the config buddy.");
+                super.getPlugin().getLogger().severe("Don't expect any support from the authors - you've edited the config.");
+                p.sendMessage("An error ocurred.");
+            }
             
             FixedMetadataValue lastKit = new FixedMetadataValue(super.getPlugin(), args[1]);
             p.setMetadata("lastKit", lastKit);
             KitReceivedEvent kre = new KitReceivedEvent(p, args[1]);
             Bukkit.getServer().getPluginManager().callEvent(kre);
+            return true;
             
             
         }
