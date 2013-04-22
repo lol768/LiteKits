@@ -28,10 +28,17 @@ public class KitNamePrompt extends ValidatingPrompt {
 
     @Override
     protected boolean isInputValid(ConversationContext arg0, String arg1) {
-        if (lk.getConfig().contains("kits." + arg1)) {
+        Boolean allowed = !lk.getConfig().contains("kits." + arg1);
+        if (!allowed) {
             arg0.getForWhom().sendRawMessage(lk.prefix + ChatColor.RED + "Kit already exists.");
+        } else {
+            if (arg1.contains(" ")) {
+                arg0.getForWhom().sendRawMessage(lk.prefix + ChatColor.RED + "You cannot use spaces in the kit name.");
+                allowed = false;
+            }
         }
-        return !lk.getConfig().contains("kits." + arg1);
+        
+        return allowed;
     }
 
 }
