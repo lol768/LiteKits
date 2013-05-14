@@ -138,7 +138,7 @@ public class Kit extends CommandUtility implements CommandExecutor {
                 return false;
             } 
             
-            if (!super.getPlugin().getConfig().contains("kits." + args[1])) {
+            if (!super.getPlugin().kitExists(args[1])) {
                 sender.sendMessage("That kit doesn't exist.");
                 return true;
             }
@@ -154,42 +154,7 @@ public class Kit extends CommandUtility implements CommandExecutor {
             if (kce.isCancelled()) {
                 return true;
             }
-           
-            Object armour = super.getPlugin().getConfig().get("kits." + args[1] + ".armour");
-            Object main = super.getPlugin().getConfig().get("kits." + args[1] + ".main");
-            Boolean aDone = false;
-            Boolean mDone = false;
-            if (armour instanceof ItemStack[]) {
-                p.getInventory().setArmorContents((ItemStack[]) armour);
-                aDone = true;
-            }
-            
-            if (main instanceof ItemStack[]) {
-                p.getInventory().setContents((ItemStack[]) main);
-                mDone = true;
-            }
-            try {
-                if (armour instanceof List) {
-                    p.getInventory().setArmorContents((ItemStack[]) ((List) armour).toArray(new ItemStack[0]));
-                    aDone = true;
-                }
-                
-                if (main instanceof List) {
-                    p.getInventory().setContents((ItemStack[]) ((List) main).toArray(new ItemStack[0]));
-                    mDone = true;
-                }
-            } catch (Exception e) {
-                super.getPlugin().getLogger().severe("Looks like you've broken the config buddy.");
-                super.getPlugin().getLogger().severe("Don't expect any support from the authors - you've edited the config.");
-                p.sendMessage("An error ocurred.");
-                
-            }
-            
-            if (!mDone || !aDone) {
-                super.getPlugin().getLogger().severe("Looks like you've broken the config buddy.");
-                super.getPlugin().getLogger().severe("Don't expect any support from the authors - you've edited the config.");
-                p.sendMessage("An error ocurred.");
-            }
+            super.getPlugin().supplyKitToPlayer(args[1], p);
             
             FixedMetadataValue lastKit = new FixedMetadataValue(super.getPlugin(), args[1]);
             p.setMetadata("lastKit", lastKit);
