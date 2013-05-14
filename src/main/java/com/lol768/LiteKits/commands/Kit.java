@@ -9,12 +9,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import com.lol768.LiteKits.LiteKits;
 import com.lol768.LiteKits.API.KitCheckEvent;
 import com.lol768.LiteKits.API.KitReceivedEvent;
 import com.lol768.LiteKits.conversation.CreationConversationPrefix;
+import com.lol768.LiteKits.conversation.KitCommandsPrompt;
+import com.lol768.LiteKits.conversation.KitModificationPrep;
 import com.lol768.LiteKits.conversation.KitNamePrompt;
 import com.lol768.LiteKits.conversation.KitRemovalPrompt;
 import com.lol768.LiteKits.utility.CommandUtility;
@@ -58,6 +62,94 @@ public class Kit extends CommandUtility implements CommandExecutor {
             }
             return true;
             
+        }
+        
+        if (args[0].equalsIgnoreCase("updateitems")) {
+            if (!sender.hasPermission("LiteKits.modify")) {
+                Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
+                return true;
+            }
+            
+            if (args.length != 2) {
+                sender.sendMessage("Usage: /kit updateitems <kitName>");
+                return true;
+            }
+            
+            if (!super.getPlugin().kitExists(args[1])) {
+                sender.sendMessage("That kit doesn't exist.");
+                return true;
+            }
+            
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("You must be a player to do this.");
+                return true;
+            }
+            
+            Player p = (Player) sender;
+            
+            PlayerInventory i = p.getInventory();
+            
+            ItemStack[] main = i.getContents();
+            super.getPlugin().getConfig().set("kits." + args[1] + ".armour", i.getArmorContents());
+            super.getPlugin().getConfig().set("kits." + args[1] + ".main", main);
+            
+            sender.sendMessage(super.getPlugin().prefix + ChatColor.GREEN + "Kit items have been updated.");
+            super.getPlugin().saveConfig();
+        }
+        
+        if (args[0].equalsIgnoreCase("removecommands")) {
+            if (!sender.hasPermission("LiteKits.modify")) {
+                Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
+                return true;
+            }
+            
+            if (args.length != 2) {
+                sender.sendMessage("Usage: /kit removecommands <kitName>");
+                return true;
+            }
+            
+            if (!super.getPlugin().kitExists(args[1])) {
+                sender.sendMessage("That kit doesn't exist.");
+                return true;
+            }
+            
+            super.getPlugin().getConfig().set("kits." + args[1] + ".commands", null);
+            super.getPlugin().saveConfig();
+            sender.sendMessage(super.getPlugin().prefix + ChatColor.GREEN + "Kit commands have been removed.");
+            
+        }
+        
+        if (args[0].equalsIgnoreCase("addcommand")) {
+            
+            if (!sender.hasPermission("LiteKits.modify")) {
+                Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
+                return true;
+            }
+            
+            if (args.length != 2) {
+                sender.sendMessage("Usage: /kit addcommand <kitName>");
+                return true;
+            }
+            
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("You must be a player to do this.");
+                return true;
+            }
+            
+            if (!super.getPlugin().kitExists(args[1])) {
+                sender.sendMessage("That kit doesn't exist.");
+                return true;
+            }
+
+            Player p = (Player) sender;
+            p.sendMessage(super.getPlugin().prefix + ChatColor.AQUA + "Welcome to the LiteKits kit modification wizard!");
+            p.sendMessage(super.getPlugin().prefix + ChatColor.AQUA + "Answer the questions in chat or use /quit to abort");
+            ConversationFactory factory = new ConversationFactory(super.getPlugin()).withModality(true);
+            factory.withEscapeSequence("/quit");
+            factory.withLocalEcho(false);
+            factory.withPrefix(new CreationConversationPrefix(super.getPlugin()));
+            factory.withFirstPrompt(new KitCommandsPrompt(super.getPlugin(), args[1]));
+            factory.buildConversation(p).begin();
         }
         
         if (args[0].equalsIgnoreCase("remove")) {
