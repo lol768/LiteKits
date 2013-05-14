@@ -11,12 +11,12 @@ import com.lol768.LiteKits.commands.Kit;
 
 public class LiteKits extends JavaPlugin {
     public String prefix;
-    public Boolean forceSlot = false;
+    public int forceSlot = -1;
 
     public void onEnable() {
         new Kit(this);
         prefix = getConfig().getString("settings.prefix", ChatColor.GRAY + "[" + ChatColor.RED + "LiteKits" + ChatColor.GRAY + "]") + " ";
-        forceSlot = getConfig().contains("settings.forceSlot");
+        forceSlot = getConfig().getInt("settings.forceSlot", -1);
     }
     
     public Boolean kitExists(String kit) {
@@ -66,9 +66,22 @@ public class LiteKits extends JavaPlugin {
             getLogger().severe("!! Config appears to have been corrupted !!");
             p.sendMessage("An error ocurred.");
         }
-        if (forceSlot) {
-            p.getInventory().setHeldItemSlot(0);
+        
+        try {
+            if (forceSlot != -1) {
+                p.getInventory().setHeldItemSlot(forceSlot);
+            }
+        } catch (Exception e) {
+            getLogger().warning("Your force slot item index is invalid.");
         }
+        
+        if (getConfig().getStringList("kits." + kit + ".commands") != null) {
+            for (String command : getConfig().getStringList("kits." + kit + ".commands")) {
+                command = command.replace("{player}", p.getName());
+                command = command.replace("{kit}", kit);
+            }
+        }
+        
         p.updateInventory();
     }
 
