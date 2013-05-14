@@ -2,6 +2,7 @@ package com.lol768.LiteKits;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -79,6 +80,13 @@ public class LiteKits extends JavaPlugin {
             for (String command : getConfig().getStringList("kits." + kit + ".commands")) {
                 command = command.replace("{player}", p.getName());
                 command = command.replace("{kit}", kit);
+                if (command.contains("[FORCEPLAYER]")) {
+                    command = command.replace("[FORCEPLAYER]", "");
+                    p.chat("/" + command);
+                } else {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                }
+                
             }
         }
         
