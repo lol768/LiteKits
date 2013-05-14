@@ -32,7 +32,6 @@ public class LiteKits extends JavaPlugin {
     }
     
     public void supplyKitToPlayer(String kit, Player p) {
-        getLogger().info("Clearing.");
         p.getInventory().clear();
         Object armour = getConfig().get("kits." + kit + ".armour");
         Object main = getConfig().get("kits." + kit + ".main");
