@@ -86,8 +86,9 @@ public class LiteKits extends JavaPlugin {
                     if (command.contains("[FORCECHAT]")) {
                         command = command.replace("[FORCECHAT]", "");
                         p.chat(command);
+                    } else {
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
                     }
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
                 }
                 
             }
