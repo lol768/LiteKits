@@ -83,6 +83,10 @@ public class LiteKits extends JavaPlugin {
                     command = command.replace("[FORCEPLAYER]", "");
                     p.chat("/" + command);
                 } else {
+                    if (command.contains("[FORCECHAT]")) {
+                        command = command.replace("[FORCECHAT]", "");
+                        p.chat(command);
+                    }
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
                 }
                 

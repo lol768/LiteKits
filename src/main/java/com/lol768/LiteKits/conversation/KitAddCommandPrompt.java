@@ -31,16 +31,21 @@ public class KitAddCommandPrompt extends BooleanPrompt {
         if (arg1) {
             return new KitCommandsPrompt(lk);
         }
-        PlayerInventory i = ((Player) arg0.getForWhom()).getInventory();
         
-        ItemStack[] main = i.getContents();
-        lk.getConfig().set("kits." + arg0.getSessionData("kitName") + ".armour", i.getArmorContents());
-        lk.getConfig().set("kits." + arg0.getSessionData("kitName") + ".main", main);
-        
-        
-        lk.saveConfig();
-        
-        return new KitMadePrompt(lk);
+        if (arg0.getSessionData("mod") == null) {
+            PlayerInventory i = ((Player) arg0.getForWhom()).getInventory();
+            
+            ItemStack[] main = i.getContents();
+            lk.getConfig().set("kits." + arg0.getSessionData("kitName") + ".armour", i.getArmorContents());
+            lk.getConfig().set("kits." + arg0.getSessionData("kitName") + ".main", main);
+            
+            
+            lk.saveConfig();
+            
+            return new KitMadePrompt(lk);
+        } else {
+            return new KitEditedPrompt(lk);
+        }
     }
 
 }

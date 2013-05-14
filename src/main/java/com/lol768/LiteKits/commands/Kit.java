@@ -18,7 +18,6 @@ import com.lol768.LiteKits.API.KitCheckEvent;
 import com.lol768.LiteKits.API.KitReceivedEvent;
 import com.lol768.LiteKits.conversation.CreationConversationPrefix;
 import com.lol768.LiteKits.conversation.KitCommandsPrompt;
-import com.lol768.LiteKits.conversation.KitModificationPrep;
 import com.lol768.LiteKits.conversation.KitNamePrompt;
 import com.lol768.LiteKits.conversation.KitRemovalPrompt;
 import com.lol768.LiteKits.utility.CommandUtility;
@@ -95,6 +94,7 @@ public class Kit extends CommandUtility implements CommandExecutor {
             
             sender.sendMessage(super.getPlugin().prefix + ChatColor.GREEN + "Kit items have been updated.");
             super.getPlugin().saveConfig();
+            return true;
         }
         
         if (args[0].equalsIgnoreCase("removecommands")) {
@@ -116,6 +116,7 @@ public class Kit extends CommandUtility implements CommandExecutor {
             super.getPlugin().getConfig().set("kits." + args[1] + ".commands", null);
             super.getPlugin().saveConfig();
             sender.sendMessage(super.getPlugin().prefix + ChatColor.GREEN + "Kit commands have been removed.");
+            return true;
             
         }
         
@@ -150,6 +151,7 @@ public class Kit extends CommandUtility implements CommandExecutor {
             factory.withPrefix(new CreationConversationPrefix(super.getPlugin()));
             factory.withFirstPrompt(new KitCommandsPrompt(super.getPlugin(), args[1]));
             factory.buildConversation(p).begin();
+            return true;
         }
         
         if (args[0].equalsIgnoreCase("remove")) {

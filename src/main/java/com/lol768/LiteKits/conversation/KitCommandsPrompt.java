@@ -30,6 +30,7 @@ public class KitCommandsPrompt extends StringPrompt {
             name = (String) arg0.getSessionData("kitName");
         } else {
             name = kit;
+            arg0.setSessionData("mod", true);
         }
         
         List<String> commands = lk.getConfig().getStringList("kits." + name + ".commands");
