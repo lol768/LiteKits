@@ -21,6 +21,7 @@ public class LiteKits extends JavaPlugin {
     }
     
     public Boolean kitExists(String kit) {
+        kit = kit.toLowerCase();
         return getConfig().contains("kits." + kit);
     }
     
@@ -32,6 +33,7 @@ public class LiteKits extends JavaPlugin {
     }
     
     public void supplyKitToPlayer(String kit, Player p) {
+        kit = kit.toLowerCase();
         p.getInventory().clear();
         Object armour = getConfig().get("kits." + kit + ".armour");
         Object main = getConfig().get("kits." + kit + ".main");

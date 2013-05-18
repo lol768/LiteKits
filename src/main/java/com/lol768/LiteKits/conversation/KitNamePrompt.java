@@ -17,12 +17,12 @@ public class KitNamePrompt extends ValidatingPrompt {
     @Override
     public String getPromptText(ConversationContext arg0) {
         
-        return "What would you like your kit's name to be?";
+        return "What would you like your kit's name to be? (case-insensitive)";
     }
 
     @Override
     protected Prompt acceptValidatedInput(ConversationContext arg0, String arg1) {
-        arg0.setSessionData("kitName", arg1);
+        arg0.setSessionData("kitName", arg1.toLowerCase());
         return new KitAddCommandPrompt(lk);
     }
 
