@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.lol768</groupId>
 	<artifactId>LiteKits</artifactId>
-	<version>1.1</version>
+	<version>1.2</version>
 	<name>LiteKits</name>
 	<description>A more lightweight kit plugin.</description>
 	<build>
@@ -93,11 +93,6 @@
 			<version>LATEST</version>
 			<type>jar</type>
 			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>1.7.1</version>
 		</dependency>
 	</dependencies>
 </project>
