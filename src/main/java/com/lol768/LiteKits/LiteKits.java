@@ -6,8 +6,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.lol768.LiteKits.API.KitCheckEvent;
+import com.lol768.LiteKits.API.KitReceivedEvent;
 import com.lol768.LiteKits.commands.Kit;
 
 public class LiteKits extends JavaPlugin {
@@ -32,7 +35,12 @@ public class LiteKits extends JavaPlugin {
         return this.prefix;
     }
     
-    public void supplyKitToPlayer(String kit, Player p) {
+    public Boolean supplyKitToPlayer(String kit, Player p) {
+        KitCheckEvent kce = new KitCheckEvent(p, kit);
+        Bukkit.getServer().getPluginManager().callEvent(kce);
+        if (kce.isCancelled()) {
+            return false;
+        }
         kit = kit.toLowerCase();
         p.getInventory().clear();
         Object armour = getConfig().get("kits." + kit + ".armour");
@@ -95,8 +103,14 @@ public class LiteKits extends JavaPlugin {
                 
             }
         }
+        FixedMetadataValue lastKit = new FixedMetadataValue(this, kit);
+        p.setMetadata("lastKit", lastKit);
+
         
+        KitReceivedEvent kre = new KitReceivedEvent(p, kit);
+        Bukkit.getServer().getPluginManager().callEvent(kre);
         p.updateInventory();
+        return true;
     }
 
 }

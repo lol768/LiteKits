@@ -241,17 +241,9 @@ public class Kit extends CommandUtility implements CommandExecutor {
             }
             
             Player p = (Player) sender;
-            KitCheckEvent kce = new KitCheckEvent(p, args[1]);
-            Bukkit.getServer().getPluginManager().callEvent(kce);
-            if (kce.isCancelled()) {
-                return true;
-            }
+           
             super.getPlugin().supplyKitToPlayer(args[1], p);
             
-            FixedMetadataValue lastKit = new FixedMetadataValue(super.getPlugin(), args[1]);
-            p.setMetadata("lastKit", lastKit);
-            KitReceivedEvent kre = new KitReceivedEvent(p, args[1]);
-            Bukkit.getServer().getPluginManager().callEvent(kre);
             return true;
             
             
