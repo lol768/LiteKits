@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.lol768.LiteKits.API.KitCheckEvent;
 import com.lol768.LiteKits.API.KitReceivedEvent;
 import com.lol768.LiteKits.commands.Kit;
+import com.lol768.LiteKits.utility.Messaging;
 
 public class LiteKits extends JavaPlugin {
     public String prefix;
@@ -36,6 +37,9 @@ public class LiteKits extends JavaPlugin {
     }
     
     public Boolean supplyKitToPlayer(String kit, Player p) {
+        if (!kitExists(kit)) {
+            throw new IllegalArgumentException("Kit doesn't exist.");
+        }
         KitCheckEvent kce = new KitCheckEvent(p, kit);
         Bukkit.getServer().getPluginManager().callEvent(kce);
         if (kce.isCancelled()) {
@@ -112,5 +116,20 @@ public class LiteKits extends JavaPlugin {
         p.updateInventory();
         return true;
     }
+    
+    public Boolean supplyKitToPlayer(String kit, Player p, Boolean usePerms) { 
+        if (usePerms && !p.hasPermission("LiteKits.kit")) {
+            Messaging.sendPermissionsError(p, prefix);
+            return false;
+        }
+        
+        if (usePerms && !p.hasPermission("LiteKits.use." + kit)) {
+            Messaging.sendPermissionsError(p, prefix);
+            return false;
+        }
+        return supplyKitToPlayer(kit, p);
+        
+    }
+    
 
 }
