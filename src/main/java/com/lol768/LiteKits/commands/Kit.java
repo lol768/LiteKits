@@ -39,6 +39,12 @@ public class Kit extends CommandUtility implements CommandExecutor {
         }
         
         if (args[0].equalsIgnoreCase("list")) {
+        
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("You must be a player to do this.");
+                return true;
+            }
+            
             if (!sender.hasPermission("LiteKits.list")) {
                 Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
                 return true;
@@ -76,11 +82,6 @@ public class Kit extends CommandUtility implements CommandExecutor {
             
             if (!super.getPlugin().kitExists(args[1])) {
                 sender.sendMessage("That kit doesn't exist.");
-                return true;
-            }
-            
-            if (!(sender instanceof Player)) {
-                sender.sendMessage("You must be a player to do this.");
                 return true;
             }
             
@@ -190,16 +191,16 @@ public class Kit extends CommandUtility implements CommandExecutor {
         }
         
         if (args[0].equalsIgnoreCase("create")) {
-            if (!sender.hasPermission("LiteKits.create")) {
-                Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
-                return true;
-            }
-            
+           
             if (!(sender instanceof Player)) {
                 sender.sendMessage("You must be a player to do this.");
                 return true;
             }
             
+            if (!sender.hasPermission("LiteKits.create")) {
+                Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
+                return true;
+            }       
             
             
             Player p = (Player) sender;
@@ -216,14 +217,17 @@ public class Kit extends CommandUtility implements CommandExecutor {
         }
         
         if (args[0].equalsIgnoreCase("select")) {
-            if (!sender.hasPermission("LiteKits.kit")) {
-                Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
-                return true;
-            }
+            
             if (!(sender instanceof Player)) {
                 sender.sendMessage("You must be a player to do this.");
                 return true;
             }
+            
+            if (!sender.hasPermission("LiteKits.kit")) {
+                Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
+                return true;
+            }
+            
             
             if (args.length != 2) {
                 sender.sendMessage("You must supply a name for the kit to select.");
