@@ -6,3 +6,6 @@ commands:
   kit:
     description: Main kit command
     usage: /kit <create|list|select|remove> [name] 
+    aliases: [lk]
+  kits: # Put a # symbol at the start of this line to disable
+    description: List kits # Put a # symbol at the start of this line to disable

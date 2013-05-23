@@ -23,6 +23,7 @@ public class KitNamePrompt extends ValidatingPrompt {
     @Override
     protected Prompt acceptValidatedInput(ConversationContext arg0, String arg1) {
         arg0.setSessionData("kitName", arg1.toLowerCase());
+        arg0.setSessionData("displayName", arg1);
         return new KitAddCommandPrompt(lk);
     }
 

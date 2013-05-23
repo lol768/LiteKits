@@ -38,7 +38,7 @@ public class KitAddCommandPrompt extends BooleanPrompt {
             ItemStack[] main = i.getContents();
             lk.getConfig().set("kits." + arg0.getSessionData("kitName") + ".armour", i.getArmorContents());
             lk.getConfig().set("kits." + arg0.getSessionData("kitName") + ".main", main);
-            
+            lk.getConfig().set("kits." + arg0.getSessionData("kitName") + ".displayName", arg0.getSessionData("displayName"));
             
             lk.saveConfig();
             

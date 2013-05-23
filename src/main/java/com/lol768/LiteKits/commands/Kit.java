@@ -38,7 +38,7 @@ public class Kit extends CommandUtility implements CommandExecutor {
             return false;
         }
         
-        if (args[0].equalsIgnoreCase("list")) {
+        if (args[0].equalsIgnoreCase("list") || commandLabel.equalsIgnoreCase("kits")) {
             if (!sender.hasPermission("LiteKits.list")) {
                 Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
                 return true;
@@ -46,14 +46,15 @@ public class Kit extends CommandUtility implements CommandExecutor {
             ConfigurationSection main = super.getPlugin().getConfig().getConfigurationSection("kits");
             StringBuilder sb = new StringBuilder();
             for (String kit: main.getKeys(false)) {
+                String kitName = (super.getPlugin().getConfig().contains("kits." + kit + ".displayName")) ? super.getPlugin().getConfig().getString("kits." + kit + ".displayName") : kit;
                 if (sender.hasPermission("LiteKits.use." + kit)) {
-                    sb.append(ChatColor.GREEN + kit + ChatColor.RESET + ", ");
+                    sb.append("\n" + ChatColor.GREEN + kitName + ChatColor.RESET + " (You can use this kit)");
                 } else {
-                    sb.append(ChatColor.GRAY + kit + ChatColor.RESET + ", "); 
+                    sb.append("\n" + ChatColor.RED + kitName + ChatColor.RESET + " (You can't use this kit)"); 
                 }
                 
             }
-            String list = sb.toString();
+            String list = sb.toString().substring(1);
             if (list == "") {
                 sender.sendMessage("There are currently no available kits.");
             } else {
