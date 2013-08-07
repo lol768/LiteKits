@@ -250,7 +250,44 @@ public class Kit extends CommandUtility implements CommandExecutor {
             
         }
         
+  if (args[0].equalsIgnoreCase("givekit")) {
+            if (!sender.hasPermission("LiteKits.givekit")) {
+                Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
+                return true;
+            }
+            /*if (!(sender instanceof Player)) {
+                sender.sendMessage("You must be a player to do this.");
+                return true;
+            }*/
+            
+            if (args.length != 3) {
+                sender.sendMessage("You must supply a name for the kit to select and a player to give it to.");
+                return false;
+            } 
+            
+            if (!super.getPlugin().kitExists(args[1])) {
+                sender.sendMessage("That kit doesn't exist.");
+                return true;
+            }
+            
+            /*if (!sender.hasPermission("LiteKits.use." + args[1])) {
+                Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
+                return true;
+            }*/
+            
+            Player p = Bukkit.getPlayer(args[2]);
+            if (p == null) {
+                sender.sendMessage("That player is offline!");
+                return true;
+            }
+            super.getPlugin().supplyKitToPlayer(args[1], p);
+            
+            return true;
+            
+            
+        }
         
+             
         return false;
         
     }
