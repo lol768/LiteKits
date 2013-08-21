@@ -250,6 +250,16 @@ public class Kit extends CommandUtility implements CommandExecutor {
             
         }
         
+        if (args[0].equalsIgnoreCase("reload")) {
+            if (!sender.hasPermission("LiteKits.reload")) {
+                Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
+                return true;
+            }
+            super.getPlugin().reloadConfig();
+            sender.sendMessage("Config reloaded.");
+            return true;
+        }
+        
   if (args[0].equalsIgnoreCase("givekit")) {
             if (!sender.hasPermission("LiteKits.givekit")) {
                 Messaging.sendPermissionsError(sender, super.getPlugin().prefix);
